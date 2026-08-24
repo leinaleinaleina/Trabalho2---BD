@@ -1,6 +1,6 @@
 package DAO;
 
-import classes.UF;
+import classes.genericos.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -33,7 +33,7 @@ public int cadastrarUF(UF uf) {
             idUF = rs.getInt("idUF");
 
         } else {
-            String sqlInsert = "INSERT INTO uf (NomeUF, SiglaUF) VALUES (?, ?)";
+            String sqlInsert = "INSERT INTO uf (UF, SiglaUF) VALUES (?, ?)";
             try (PreparedStatement stmtInsert = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
                 stmtInsert.setString(1, uf.getUF());
                 stmtInsert.setString(2 , uf.getSiglaUF());

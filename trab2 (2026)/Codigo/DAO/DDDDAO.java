@@ -1,7 +1,7 @@
 // Em src/DAO/DDDDAO.java
 package DAO;
 
-import classes.DDD;
+import classes.genericos.DDD;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,10 +29,9 @@ public class DDDDAO {
             if (rs.next()) {
                 idDDD = rs.getInt("idDDD");
             } else {
-                String sqlInsert = "INSERT INTO DDD (DDD, DDDI_idDDDI) VALUES (?, ?)";
+                String sqlInsert = "INSERT INTO DDD (DDD) VALUES (?)";
                 try (PreparedStatement stmtInsert = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
                     stmtInsert.setInt(1, ddd.getDDD());
-                    stmtInsert.setInt(2, ddd.getDDDI().getidDDDI());
 
                     stmtInsert.executeUpdate();
                     ResultSet generatedKeys = stmtInsert.getGeneratedKeys();

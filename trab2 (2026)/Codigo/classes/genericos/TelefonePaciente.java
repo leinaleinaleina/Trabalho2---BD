@@ -3,7 +3,7 @@ package classes.genericos;
 public class TelefonePaciente {
     public String telefone;
     private  DDD ddd;
-    private final DDDI dddi;
+    private DDDI dddi;
     private int idTelefone;
     private Paciente Paciente;
 
@@ -37,6 +37,10 @@ public class TelefonePaciente {
 
     public DDDI getDDDI() {
         return dddi;
+    }
+
+    public void setDDDI (DDDI dddi) {
+        this.dddi = dddi;
     }
 
     @Override

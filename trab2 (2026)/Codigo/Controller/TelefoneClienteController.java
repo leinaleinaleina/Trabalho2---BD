@@ -2,9 +2,7 @@
 package Controller;
 
 import DAO.TelefoneClienteDAO;
-import classes.Cliente;
-import classes.DDD;
-import classes.TelefoneCliente;
+import classes.genericos.*;
 
 public class TelefoneClienteController {
 

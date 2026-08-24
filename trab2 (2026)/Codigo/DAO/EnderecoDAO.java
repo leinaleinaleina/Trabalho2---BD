@@ -1,6 +1,6 @@
 package DAO;
 
-import classes.Endereco;
+import classes.genericos.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

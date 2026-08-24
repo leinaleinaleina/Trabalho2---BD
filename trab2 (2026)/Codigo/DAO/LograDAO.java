@@ -1,6 +1,6 @@
 package DAO;
 
-import classes.Logra;
+import classes.genericos.Logra;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

@@ -1,6 +1,6 @@
 package DAO;
 
-import classes.TipoLogra;
+import classes.genericos.TipoLogra;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,7 +17,7 @@ public class TipoLograDAO {
     public int cadastrarTipoLogra (TipoLogra tipo) {
         int idTipoLogra = -1;
 
-    String sqlSelect = "SELECT idTipo_Logradouro FROM Tipo_logradouro WHERE Tipo_logradouro = ?";
+    String sqlSelect = "SELECT idTipoLogradouro FROM TipoLogradouro WHERE TipoLogradouro = ?";
 
     try (Connection con = DriverManager.getConnection(url, usuario, senha);
          PreparedStatement stmt = con.prepareStatement(sqlSelect)) {
@@ -27,10 +27,10 @@ public class TipoLograDAO {
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
-            idTipoLogra = rs.getInt("idTipo_Logradouro");
+            idTipoLogra = rs.getInt("idTipoLogradouro");
         } else {
             // Se não existir, insere o bairro novo
-            String sqlInsert = "INSERT INTO Tipo_logradouro (Tipo_logradouro) VALUES (?)";
+            String sqlInsert = "INSERT INTO TipoLogradouro (TipoLogradouro) VALUES (?)";
             try (PreparedStatement stmtInsert = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
                 stmtInsert.setString(1, tipo.getTipoLogra());
 

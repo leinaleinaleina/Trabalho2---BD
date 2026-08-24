@@ -1,7 +1,6 @@
-// Em src/DAO/EmailDAO.java
 package DAO;
 
-import classes.Email;
+import classes.genericos.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,14 +14,14 @@ public class EmailDAO {
     private final String usuario = "root";
     private final String senha = "root";
 
-    public void cadastrarEmail(Email email, int idCliente) {
-        String sql = "INSERT INTO Email_cliente (Email, Cliente_idCliente) VALUES (?, ?)";
+    public void cadastrarEmailPaciente(EmailPaciente email, int idPaciente) {
+        String sql = "INSERT INTO EmailPaciente (EmailP, Paciente_idPaciente) VALUES (?, ?)";
 
         try (Connection con = DriverManager.getConnection(url, usuario, senha);
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
             stmt.setString(1, email.getEmail());
-            stmt.setInt(2, idCliente);
+            stmt.setInt(2, idPaciente);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -30,24 +29,46 @@ public class EmailDAO {
         }
     }
 
-    public List<Email> buscarEmailsPorClienteID(int idCliente) {
-        List<Email> emailsEncontrados = new ArrayList<>();
-        String sql = "SELECT idEmail, Email FROM Email_cliente WHERE Cliente_idCliente = ?";
+    public List<EmailPaciente> buscarEmailsPorPacienteID(int idPaciente) {
+        List<EmailPaciente> emailsEncontrados = new ArrayList<>();
+        String sql = "SELECT idEmailP, Email FROM EmailPaciente WHERE Paciente_idPaciente = ?";
 
         try (Connection con = DriverManager.getConnection(url, usuario, senha);
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setInt(1, idCliente);
+            stmt.setInt(1, idPaciente);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Email email = new Email();
-                email.setidEmail(rs.getInt("idEmail"));
-                email.setEmail(rs.getString("Email"));
+                EmailPaciente email = new EmailPaciente();
+                email.setidEmail(rs.getInt("idEmailP"));
+                email.setEmail(rs.getString("EmailPaciente"));
                 emailsEncontrados.add(email);
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao buscar emails do cliente: " + e.getMessage());
+            System.out.println("Erro ao buscar emails do paciente: " + e.getMessage());
+        }
+        return emailsEncontrados;
+    }
+
+    public List<EmailMedico> buscarEmailsPorMedicoID (String CRM) {
+        List<EmailMedico> emailsEncontrados = new ArrayList<>();
+        String sql = "SELECT idEmailM, EmailMedico FROM EmailMedico WHERE Medico_CRM = ?";
+
+        try (Connection con = DriverManager.getConnection(url, usuario, senha);
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, CRM);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                EmailMedico email = new EmailMedico();
+                email.setidEmail(rs.getInt("idEmailM"));
+                email.setEmail(rs.getString("EmailMedico"));
+                emailsEncontrados.add(email);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar emails do medico: " + e.getMessage());
         }
         return emailsEncontrados;
     }

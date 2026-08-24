@@ -1,6 +1,6 @@
 package DAO;
 
-import classes.Cidade;
+import classes.genericos.Cidade;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ public class CidadeDAO {
     private final String usuario = "root";
     private final String senha = "root";
 
-// Em CidadeDAO.java
+
 
 public int cadastrarCidade(Cidade cidade) {
     int idCidade = -1;

@@ -1,6 +1,6 @@
 package DAO;
 
-import classes.DDDI;
+import classes.genericos.DDDI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,8 +17,7 @@ public class DDDIDAO {
     public int cadastrarDDDI (DDDI dddi) {
        int idDDDI = -1;
 
-        // Verifica se o logradouro já existe
-        String sqlSelect = "SELECT idDDDI FROM DDDI WHERE DDDI = ?";
+        String sqlSelect = "SELECT idDDDI FROM DDI WHERE DDDI = ?";
 
         try (Connection con = DriverManager.getConnection(url, usuario, senha);
                 PreparedStatement stmt = con.prepareStatement(sqlSelect)) {
@@ -43,7 +42,7 @@ public class DDDIDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao buscar ou cadastrar DDDDI: " + e.getMessage());
+            System.out.println("Erro ao buscar ou cadastrar DDI: " + e.getMessage());
         }
 
         return idDDDI;
