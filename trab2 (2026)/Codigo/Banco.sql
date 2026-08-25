@@ -4,61 +4,61 @@ USE mydb;
 
 
 CREATE TABLE UF (
-    idUF INT PRIMARY KEY,
+    idUF INT AUTO_INCREMENT PRIMARY KEY,
     UF VARCHAR(45),
     SiglaUF VARCHAR(4)
 );
 
 CREATE TABLE Bairro (
-    idBairro INT PRIMARY KEY,
+    idBairro INT  AUTO_INCREMENT PRIMARY KEY,
     Bairro VARCHAR(45)
 );
 
 CREATE TABLE TipoLogradouro (
-    idTipoLogradouro INT PRIMARY KEY,
+    idTipoLogradouro INT AUTO_INCREMENT KEY,
     TipoLogradouro VARCHAR(45)
 );
 
 CREATE TABLE EstadoCivil (
-    idEstadoCivil INT PRIMARY KEY,
+    idEstadoCivil INT AUTO_INCREMENTPRIMARY KEY,
     EstadoCivil VARCHAR(45)
 );
 
 CREATE TABLE Sexo (
-    idSexo INT PRIMARY KEY,
+    idSexo INT AUTO_INCREMENT PRIMARY KEY,
     Sexo VARCHAR(45)
 );
 
 CREATE TABLE DDI (
-    idDDI INT PRIMARY KEY,
+    idDDI INT AUTO_INCREMENT PRIMARY KEY,
     DDI VARCHAR(45)
 );
 
 CREATE TABLE DDD (
-    idDDD INT PRIMARY KEY,
+    idDDD INT AUTO_INCREM ENTPRIMARY KEY,
     DDD VARCHAR(45)
 );
 
 CREATE TABLE Medico (
-    CRM VARCHAR(45) PRIMARY KEY,
+    CRM VARCHAR(45) AUTO_INCREMENT PRIMARY KEY,
     Nome_Medico VARCHAR(45),
     Area VARCHAR(45)
 );
 
 CREATE TABLE Diagnostico (
-    CID VARCHAR(24) PRIMARY KEY,
+    CID VARCHAR(24) AUTO_INCREMENT PRIMARY KEY,
     NomeCID VARCHAR(45),
     DescricaoCID VARCHAR(45)
 );
 
 CREATE TABLE TipoExame (
-    idTipoExame INT PRIMARY KEY,
+    idTipoExame INT AUTO_INCREMENT PRIMARY KEY,
     TipoExame VARCHAR(45),
     Descricao VARCHAR(150)
 );
 
 CREATE TABLE Resultado (
-    idResultado INT PRIMARY KEY,
+    idResultado INT AUTO_INCREMENT PRIMARY KEY,
     Resultado VARCHAR(45)
 );
 
@@ -66,21 +66,21 @@ CREATE TABLE Resultado (
 -- Tabelas de dependencia 1
 
 CREATE TABLE Cidade (
-    idCidade INT PRIMARY KEY,
+    idCidade INT AUTO_INCREMENT PRIMARY KEY,
     Cidade VARCHAR(45),
     UF_idUF INT,
     FOREIGN KEY (UF_idUF) REFERENCES UF(idUF)
 );
 
 CREATE TABLE Logradouro (
-    idLogradouro INT PRIMARY KEY,
+    idLogradouro INT AUTO_INCREMENT PRIMARY KEY,
     Logradouro VARCHAR(45),
     TipoLogradouro_idTipoLogradouro INT,
     FOREIGN KEY (TipoLogradouro_idTipoLogradouro) REFERENCES TipoLogradouro(idTipoLogradouro)
 );
 
 CREATE TABLE EmailMedico (
-    idEmailM INT PRIMARY KEY,
+    idEmailM INT AUTO_INCREMENT PRIMARY KEY,
     EmailMedico VARCHAR(45),
     Medico_CRM VARCHAR(45),
     FOREIGN KEY (Medico_CRM) REFERENCES Medico(CRM)
@@ -90,7 +90,7 @@ CREATE TABLE EmailMedico (
 -- Tabelas de dependencia 2
 
 CREATE TABLE Endereço (
-    idEndereço INT PRIMARY KEY,
+    idEndereço INT AUTO_INCREMENT PRIMARY KEY,
     CEP VARCHAR(45),
     Bairro_idBairro INT,
     Cidade_idCidade INT,
@@ -106,7 +106,7 @@ CREATE TABLE Endereço (
 -- Tabelas centrais 
 
 CREATE TABLE Paciente (
-    idPaciente INT PRIMARY KEY,
+    idPaciente INT AUTO_INCREMENT PRIMARY KEY,
     Nome_Paciente VARCHAR(45),
     DataNascimento VARCHAR(45),
     Documento VARCHAR(45),
@@ -126,7 +126,7 @@ CREATE TABLE Paciente (
 );
 
 CREATE TABLE Fone (
-    idFone INT PRIMARY KEY,
+    idFone INT  AUTO_INCREMENT PRIMARY KEY,
     Fone VARCHAR(45),
     DDD_idDDD INT,
     Paciente_idPaciente INT,
@@ -137,7 +137,7 @@ CREATE TABLE Fone (
 );
 
 CREATE TABLE EmailPaciente (
-    idEmailP INT PRIMARY KEY,
+    idEmailP INT AUTO_INCREMENT PRIMARY KEY,
     EmailPaciente VARCHAR(45),
     Paciente_idPaciente INT,
     FOREIGN KEY (Paciente_idPaciente) REFERENCES Paciente(idPaciente)
