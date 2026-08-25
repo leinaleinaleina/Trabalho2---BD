@@ -14,10 +14,10 @@ public class DDDIDAO {
     private final String usuario = "root";
     private final String senha = "root";
 
-    public int cadastrarDDDI (DDDI dddi) {
+ public int cadastrarDDDI (DDDI dddi) {
        int idDDDI = -1;
 
-        String sqlSelect = "SELECT idDDDI FROM DDI WHERE DDDI = ?";
+        String sqlSelect = "SELECT idDDI FROM DDI WHERE DDI = ?";
 
         try (Connection con = DriverManager.getConnection(url, usuario, senha);
                 PreparedStatement stmt = con.prepareStatement(sqlSelect)) {
@@ -27,10 +27,10 @@ public class DDDIDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                idDDDI = rs.getInt("idDDDI");
+                idDDDI = rs.getInt("idDDI"); // CORRIGIDO AQUI
 
             } else {
-                String sqlInsert = "INSERT INTO DDDI (DDDI) VALUES (?)";
+                String sqlInsert = "INSERT INTO DDI (DDI) VALUES (?)";
                 try (PreparedStatement stmtInsert = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
                     stmtInsert.setInt(1, dddi.getDDDI());
 

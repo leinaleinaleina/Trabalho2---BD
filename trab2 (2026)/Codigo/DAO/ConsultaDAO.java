@@ -35,27 +35,39 @@ public class ConsultaDAO {
     public List<Consulta> buscarConsultaPorContaID(int idConta) {
     List<Consulta> investimentos = new ArrayList<>();
     
-    String sql = "SELECT c.*, m.Nome_Medico, m.Area, d.NomeCID, d.DescricaoCID FROM Consulta c " +
+String sql = "SELECT c.NroConsulta, c.DataConsulta, " +
+             "m.CRM, m.Nome_Medico, m.Area, " +
+             "d.CID, d.NomeCID, d.DescricaoCID " +
+             "FROM Consulta c " +
              "JOIN Medico m ON c.Medico_CRM = m.CRM " +
              "JOIN Diagnostico d ON c.Diagnostico_CID = d.CID " +
-             "WHERE c.Paciente_idPaciente = ? " +
-             "ORDER BY c.DataConsulta DESC"; // Ordena das consultas mais recentes para as mais antigas
+             "WHERE c.Paciente_idPaciente = ?";
 
     try (Connection con = DriverManager.getConnection(url, usuario, senha);
          PreparedStatement stmt = con.prepareStatement(sql)) {
 
         stmt.setInt(1, idConta);
         ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Consulta consulta = new Consulta();
 
-        while (rs.next()) {
-            Consulta consulta = new Consulta();
-            consulta.setNro_consulta (rs.getInt("NroConsulta"));
-            consulta.setData_consulta (rs.getString("DataConsulta"));
-            consulta.getDiagnostico().setCID(rs.getString("Diagnostico_CID"));
-            consulta.getMedico().setCRM(rs.getString("Medico_CRM"));
+                consulta.setNro_consulta(rs.getInt("NroConsulta"));
+                consulta.setData_consulta(rs.getString("DataConsulta"));
 
-            investimentos.add(consulta);
-        }
+                Medico medico = new Medico();
+                medico.setCRM(rs.getString("CRM"));
+                medico.setNome_medico(rs.getString("Nome_Medico"));
+                medico.setArea(rs.getString("Area"));
+                consulta.setMedico(medico);
+
+                Diagnostico diagnostico = new Diagnostico();
+                diagnostico.setCID(rs.getString("CID"));
+                diagnostico.setNome_CID(rs.getString("NomeCID"));
+                diagnostico.setDescricao(rs.getString("DescricaoCID"));
+                consulta.setDiagnostico(diagnostico);
+
+                investimentos.add(consulta);
+            }
     } catch (SQLException e) {
         System.out.println("Erro ao buscar investimentos por conta: " + e.getMessage());
     }
@@ -66,15 +78,14 @@ public class ConsultaDAO {
 public List<Consulta> buscarConsultasPorPacienteID(int idPaciente) {
         List<Consulta> consultasEncontradas = new ArrayList<>();
 
-        // Usamos JOIN para buscar os dados do Médico e do Diagnóstico junto com a Consulta
-        String sql = "SELECT c.NroConsulta, c.DataConsulta, " +
-                     "m.CRM, m.Nome_Medico, m.Area, " +
-                     "d.CID, d.NomeCID, d.DescricaoCID " +
-                     "FROM Consulta c " +
-                     "JOIN Medico m ON c.Medico_CRM = m.CRM " +
-                     "JOIN Diagnostico d ON c.Diagnostico_CID = d.CID " +
-                     "WHERE c.Paciente_idPaciente = ? " +
-                     "ORDER BY c.DataConsulta DESC"; // Ordena da consulta mais recente para a mais antiga
+String sql = "SELECT c.NroConsulta, c.DataConsulta, " +
+             "m.CRM, m.Nome_Medico, m.Area, " +
+             "d.CID, d.NomeCID, d.DescricaoCID " +
+             "FROM Consulta c " +
+             "JOIN Medico m ON c.Medico_CRM = m.CRM " +
+             "JOIN Diagnostico d ON c.Diagnostico_CID = d.CID " +
+             "WHERE c.Paciente_idPaciente = ?" +
+             "ORDER BY c.DataConsulta DESC"; 
 
         try (Connection con = DriverManager.getConnection(url, usuario, senha);
              PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -85,25 +96,21 @@ public List<Consulta> buscarConsultasPorPacienteID(int idPaciente) {
             while (rs.next()) {
                 Consulta consulta = new Consulta();
 
-                // 1. Dados básicos da Consulta
                 consulta.setNro_consulta(rs.getInt("NroConsulta"));
                 consulta.setData_consulta(rs.getString("DataConsulta"));
 
-                // 2. Populando o objeto Medico que fica dentro da Consulta
                 Medico medico = new Medico();
                 medico.setCRM(rs.getString("CRM"));
                 medico.setNome_medico(rs.getString("Nome_Medico"));
                 medico.setArea(rs.getString("Area"));
                 consulta.setMedico(medico);
 
-                // 3. Populando o objeto Diagnostico que fica dentro da Consulta
                 Diagnostico diagnostico = new Diagnostico();
                 diagnostico.setCID(rs.getString("CID"));
                 diagnostico.setNome_CID(rs.getString("NomeCID"));
                 diagnostico.setDescricao(rs.getString("DescricaoCID"));
                 consulta.setDiagnostico(diagnostico);
 
-                // Adiciona a consulta montada na lista
                 consultasEncontradas.add(consulta);
             }
 

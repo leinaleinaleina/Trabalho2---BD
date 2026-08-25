@@ -31,7 +31,7 @@ public class EmailDAO {
 
     public List<EmailPaciente> buscarEmailsPorPacienteID(int idPaciente) {
         List<EmailPaciente> emailsEncontrados = new ArrayList<>();
-        String sql = "SELECT idEmailP, Email FROM EmailPaciente WHERE Paciente_idPaciente = ?";
+        String sql = "SELECT idEmailP, EmailPaciente FROM EmailPaciente WHERE Paciente_idPaciente = ?";
 
         try (Connection con = DriverManager.getConnection(url, usuario, senha);
              PreparedStatement stmt = con.prepareStatement(sql)) {

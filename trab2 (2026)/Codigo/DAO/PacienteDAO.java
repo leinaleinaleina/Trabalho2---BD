@@ -39,22 +39,22 @@ public Paciente buscarPacientePorID (int ID) {
     Paciente paciente = null;
     
     String sql = "SELECT " +
-                 "c.idPaciente, c.Nome_Paciente, c.Documento, c.Numero, c.Complemento, " +
-                 "s.idSexo, s.Sexo" +
-                 "ec.idEstadoCivil, ec.EstadoCivil" +
-                 "e.idEndereco, e.CEP, " +
+                 "c.idPaciente, c.Nome_Paciente, c.DataNascimento, c.Documento, c.Numero, c.Complemento, " +
+                 "s.idSexo, s.Sexo, " + 
+                 "ec.idEstadoCivil, ec.EstadoCivil, " +
+                 "e.idEndereço, e.CEP, " +
                  "b.Bairro, " +
                  "l.Logradouro, " +
-                 "tl.Tipo_logradouro, " +
+                 "tl.TipoLogradouro, " +
                  "ci.Cidade, " +
-                 "u.NomeUF, u.SiglaUF " +
+                 "u.UF, u.SiglaUF " +
                  "FROM Paciente c " +
-                 "JOIN Sexo s ON c.Sexo_idSexo = s.idSexo" +
-                 "JOIN EstadoCivil ec ON c.Estadocivil_idEstadocivil = ec.idEstadoCivil" +
-                 "JOIN Endereco e ON c.Endereco_idEndereco = e.idEndereco " +
+                 "JOIN Sexo s ON c.Sexo_idSexo = s.idSexo " +
+                 "JOIN EstadoCivil ec ON c.EstadoCivil_idEstadoCivil = ec.idEstadoCivil " +
+                 "JOIN Endereço e ON c.Endereço_idEndereço = e.idEndereço " +
                  "JOIN Bairro b ON e.Bairro_idBairro = b.idBairro " +
                  "JOIN Logradouro l ON e.Logradouro_idLogradouro = l.idLogradouro " +
-                 "JOIN Tipo_logradouro tl ON l.Tipo_Logradouro_idTipo_Logradouro = tl.idTipo_Logradouro " +
+                 "JOIN TipoLogradouro tl ON l.TipoLogradouro_idTipoLogradouro = tl.idTipoLogradouro " +
                  "JOIN Cidade ci ON e.Cidade_idCidade = ci.idCidade " +
                  "JOIN UF u ON ci.UF_idUF = u.idUF " +
                  "WHERE c.idPaciente = ?";
@@ -65,12 +65,9 @@ public Paciente buscarPacientePorID (int ID) {
         stmt.setInt(1, ID);
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
-
-
             paciente = new Paciente();
             Sexo sexo = new Sexo();
             EstadoCivil estadoCivil = new EstadoCivil();
-
             Endereco endereco = new Endereco();
             Bairro bairro = new Bairro();
             Cidade cidade = new Cidade();
@@ -86,14 +83,16 @@ public Paciente buscarPacientePorID (int ID) {
             paciente.setcomp_Paciente(rs.getString("Complemento"));
             sexo.setSexo(rs.getString ("Sexo"));
             estadoCivil.setEstadoCivil(rs.getString ("EstadoCivil"));
+            paciente.setSexo(sexo);
+            paciente.setEstadocivil(estadoCivil);
 
-            endereco.setidEndereco(rs.getInt("idEndereco"));
+            endereco.setidEndereco(rs.getInt("idEndereço")); // Puxando com 'ç'
             endereco.setCEP(rs.getString("CEP"));
             bairro.setBairro(rs.getString("Bairro"));
             endereco.setBairro(bairro);
             cidade.setCidade(rs.getString("Cidade"));
             uf.setUF(rs.getString("UF"));
-            uf.setSiglaUF(rs.getString("SiglaUF")); // Adicionando a sigla
+            uf.setSiglaUF(rs.getString("SiglaUF")); 
             cidade.setUF(uf);
             endereco.setCidade(cidade);
             tipoLogra.setTipoLogra(rs.getString("TipoLogradouro"));
@@ -103,11 +102,11 @@ public Paciente buscarPacientePorID (int ID) {
             paciente.setEndereco(endereco);
 
         } else {
-            System.out.println("DEBUG: rs.next() retornou false. Nenhum resultado na consulta.");
+            System.out.println("DEBUG: Nenhum paciente encontrado com este ID.");
         }
 
     } catch (SQLException e) {
-        System.out.println("ERRO GRAVE ao buscar paciente por ID: " + e.getMessage());
+        System.out.println("ERRO ao buscar paciente por ID: " + e.getMessage());
     }
 
     return paciente;
@@ -115,23 +114,24 @@ public Paciente buscarPacientePorID (int ID) {
 
 public Paciente buscarClientePorDoc (String Documento) {
     Paciente paciente = null;
+    
     String sql = "SELECT " +
-                 "c.idCliente, c.Nome_cliente, c.Documento, c.Numero, c.Complemento, " +
-                 "s.idSexo, s.Sexo" +
-                 "ec.idEstadoCivil, ec.EstadoCivil" +
-                 "e.idEndereco, e.CEP, " +
+                 "c.idPaciente, c.Nome_Paciente, c.DataNascimento, c.Documento, c.Numero, c.Complemento, " +
+                 "s.idSexo, s.Sexo, " +
+                 "ec.idEstadoCivil, ec.EstadoCivil, " +
+                 "e.idEndereço, e.CEP, " +
                  "b.Bairro, " +
                  "l.Logradouro, " +
-                 "tl.Tipo_logradouro, " +
+                 "tl.TipoLogradouro, " +
                  "ci.Cidade, " +
-                 "u.NomeUF, u.SiglaUF " +
-                 "FROM Cliente c " +
-                 "JOIN Sexo s ON c.Sexo_idSexo = s.idSexo" +
-                 "JOIN EstadoCivil ec ON c.Estadocivil_idEstadocivil = ec.idEstadoCivil" +
-                 "JOIN Endereco e ON c.Endereco_idEndereco = e.idEndereco " +
+                 "u.UF, u.SiglaUF " +
+                 "FROM Paciente c " +
+                 "JOIN Sexo s ON c.Sexo_idSexo = s.idSexo " +
+                 "JOIN EstadoCivil ec ON c.EstadoCivil_idEstadoCivil = ec.idEstadoCivil " +
+                 "JOIN Endereço e ON c.Endereço_idEndereço = e.idEndereço " +
                  "JOIN Bairro b ON e.Bairro_idBairro = b.idBairro " +
                  "JOIN Logradouro l ON e.Logradouro_idLogradouro = l.idLogradouro " +
-                 "JOIN Tipo_logradouro tl ON l.Tipo_Logradouro_idTipo_Logradouro = tl.idTipo_Logradouro " +
+                 "JOIN TipoLogradouro tl ON l.TipoLogradouro_idTipoLogradouro = tl.idTipoLogradouro " +
                  "JOIN Cidade ci ON e.Cidade_idCidade = ci.idCidade " +
                  "JOIN UF u ON ci.UF_idUF = u.idUF " +
                  "WHERE c.Documento = ?";
@@ -146,7 +146,6 @@ public Paciente buscarClientePorDoc (String Documento) {
             paciente = new Paciente();
             Sexo sexo = new Sexo();
             EstadoCivil estadoCivil = new EstadoCivil();
-
             Endereco endereco = new Endereco();
             Bairro bairro = new Bairro();
             Cidade cidade = new Cidade();
@@ -154,7 +153,7 @@ public Paciente buscarClientePorDoc (String Documento) {
             Logra logra = new Logra();
             TipoLogra tipoLogra = new TipoLogra();
 
-             paciente.setidPaciente(rs.getInt("idPaciente"));
+            paciente.setidPaciente(rs.getInt("idPaciente"));
             paciente.setnome_Paciente(rs.getString("Nome_Paciente"));
             paciente.setdocumento_Paciente (rs.getString("Documento"));
             paciente.setData_nascimento(rs.getString("DataNascimento"));
@@ -162,8 +161,10 @@ public Paciente buscarClientePorDoc (String Documento) {
             paciente.setcomp_Paciente(rs.getString("Complemento"));
             sexo.setSexo(rs.getString ("Sexo"));
             estadoCivil.setEstadoCivil(rs.getString ("EstadoCivil"));
+            paciente.setSexo(sexo);
+            paciente.setEstadocivil(estadoCivil);
 
-            endereco.setidEndereco(rs.getInt("idEndereco"));
+            endereco.setidEndereco(rs.getInt("idEndereço")); // Puxando com 'ç'
             endereco.setCEP(rs.getString("CEP"));
             bairro.setBairro(rs.getString("Bairro"));
             endereco.setBairro(bairro);

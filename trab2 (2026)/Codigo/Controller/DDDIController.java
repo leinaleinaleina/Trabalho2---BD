@@ -2,7 +2,6 @@ package Controller;
 
 import DAO.*;
 import classes.genericos.*;
-import java.util.List;
 
 public class DDDIController {
 

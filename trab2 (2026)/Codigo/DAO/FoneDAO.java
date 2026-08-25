@@ -32,7 +32,7 @@ public int cadastrarTelefone (TelefonePaciente fone) {
             idFone = rs.getInt("idFone");
         } else {
         
-            String sqlInsert = "INSERT INTO Fone (Fone, DDD_idDDD, DDI_idDDDI, Paciente_idPaciente) VALUES (?, ?, ?, ?)";
+            String sqlInsert = "INSERT INTO Fone (Fone, DDD_idDDD, DDI_idDDI, Paciente_idPaciente) VALUES (?, ?, ?, ?)";
             try (PreparedStatement stmtInsert = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
                 stmtInsert.setString(1, fone.getTelefone());
                 stmtInsert.setInt (2 , fone.getDDD().getidDDD());
@@ -58,10 +58,13 @@ public int cadastrarTelefone (TelefonePaciente fone) {
 public List<TelefonePaciente> buscarFone (int idPaciente) {
     List<TelefonePaciente> telefonesEncontrados = new ArrayList<>();
     
-    String sql = "SELECT tc.Nro_telefone, d.DDD, di.DDDI FROM Fone tc " +
-                 "JOIN DDD d ON tc.DDD_idDDD = d.idDDD " +
-                 "JOIN DDDI di ON d.DDDI_idDDDI = di.idDDDI " + 
-                 "WHERE tc.Paciente_idPaciente = ?";
+String sql = "SELECT f.idFone, f.Fone, " +
+             "d.idDDD, d.DDD, " +
+             "di.idDDI, di.DDI " +
+             "FROM Fone f " +
+             "JOIN DDD d ON f.DDD_idDDD = d.idDDD " +
+             "JOIN DDI di ON f.DDI_idDDI = di.idDDI " +
+             "WHERE f.Paciente_idPaciente = ?";
 
     try (Connection con = DriverManager.getConnection(url, usuario, senha);
          PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -70,19 +73,21 @@ public List<TelefonePaciente> buscarFone (int idPaciente) {
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            TelefonePaciente telefone = new TelefonePaciente();
-            DDD ddd = new DDD();
-            DDDI dddi = new DDDI(); 
-            
-            dddi.setDDDI(rs.getInt("DDDI")); 
-            
-            ddd.setDDD(rs.getInt("DDD")); 
-            telefone.setDDDI(dddi); 
-            
-            telefone.setTelefone(rs.getString("Nro_telefone"));
-            telefone.setDDD(ddd); 
-            
-            telefonesEncontrados.add(telefone);
+         DDDI dddi = new DDDI();
+        dddi.setDDDI(rs.getInt("idDDI"));
+        dddi.setDDDI(rs.getInt("DDI"));
+
+        DDD ddd = new DDD();
+        ddd.setDDD(rs.getInt("idDDD"));
+        ddd.setDDD(rs.getInt("DDD"));
+
+        TelefonePaciente fone = new TelefonePaciente();
+        fone.setidTelefone(rs.getInt("idFone"));
+        fone.setTelefone(rs.getString("Fone"));
+        fone.setDDD(ddd);
+        fone.setDDDI(dddi);
+
+        telefonesEncontrados.add(fone);
         }
 
     } catch (SQLException e) {
