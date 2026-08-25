@@ -66,9 +66,9 @@ public class MenuController {
     }
 
     private void buscarCliente() {
-        ClienteController clienteController = new ClienteController();
-        System.out.println("\n--- Buscar Cliente ---");
-        System.out.print("Digite o ID ou CPF do cliente: ");
+        PacienteController clienteController = new PacienteController();
+        System.out.println("\n--- Buscar Paciente ---");
+        System.out.print("Digite o ID ou Documento do paciente: ");
         String busca = scanner.nextLine();
         try {
             int id = Integer.parseInt(busca);

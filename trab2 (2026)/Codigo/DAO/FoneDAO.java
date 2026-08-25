@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList; 
 import java.util.List;  
 
-public class TelefoneClienteDAO {
+public class FoneDAO {
     private final String url = "jdbc:mysql://localhost:3306/mydb";
     
     private final String usuario = "root";
@@ -55,7 +55,7 @@ public int cadastrarTelefone (TelefonePaciente fone) {
 
 
 
-public List<TelefonePaciente> buscarTelefonesPorClienteID(int idDoCliente) {
+public List<TelefonePaciente> buscarFone (int idPaciente) {
     List<TelefonePaciente> telefonesEncontrados = new ArrayList<>();
     
     String sql = "SELECT tc.Nro_telefone, d.DDD, di.DDDI FROM Fone tc " +
@@ -66,7 +66,7 @@ public List<TelefonePaciente> buscarTelefonesPorClienteID(int idDoCliente) {
     try (Connection con = DriverManager.getConnection(url, usuario, senha);
          PreparedStatement stmt = con.prepareStatement(sql)) {
 
-        stmt.setInt(1, idDoCliente);
+        stmt.setInt(1, idPaciente);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {

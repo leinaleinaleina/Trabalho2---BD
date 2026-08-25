@@ -1,6 +1,7 @@
 package DAO;
 
 import classes.casodeuso.*;
+import classes.genericos.Medico;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -60,4 +61,56 @@ public class ConsultaDAO {
     }
     return investimentos;
 }
+
+
+public List<Consulta> buscarConsultasPorPacienteID(int idPaciente) {
+        List<Consulta> consultasEncontradas = new ArrayList<>();
+
+        // Usamos JOIN para buscar os dados do Médico e do Diagnóstico junto com a Consulta
+        String sql = "SELECT c.NroConsulta, c.DataConsulta, " +
+                     "m.CRM, m.Nome_Medico, m.Area, " +
+                     "d.CID, d.NomeCID, d.DescricaoCID " +
+                     "FROM Consulta c " +
+                     "JOIN Medico m ON c.Medico_CRM = m.CRM " +
+                     "JOIN Diagnostico d ON c.Diagnostico_CID = d.CID " +
+                     "WHERE c.Paciente_idPaciente = ? " +
+                     "ORDER BY c.DataConsulta DESC"; // Ordena da consulta mais recente para a mais antiga
+
+        try (Connection con = DriverManager.getConnection(url, usuario, senha);
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, idPaciente);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Consulta consulta = new Consulta();
+
+                // 1. Dados básicos da Consulta
+                consulta.setNro_consulta(rs.getInt("NroConsulta"));
+                consulta.setData_consulta(rs.getString("DataConsulta"));
+
+                // 2. Populando o objeto Medico que fica dentro da Consulta
+                Medico medico = new Medico();
+                medico.setCRM(rs.getString("CRM"));
+                medico.setNome_medico(rs.getString("Nome_Medico"));
+                medico.setArea(rs.getString("Area"));
+                consulta.setMedico(medico);
+
+                // 3. Populando o objeto Diagnostico que fica dentro da Consulta
+                Diagnostico diagnostico = new Diagnostico();
+                diagnostico.setCID(rs.getString("CID"));
+                diagnostico.setNome_CID(rs.getString("NomeCID"));
+                diagnostico.setDescricao(rs.getString("DescricaoCID"));
+                consulta.setDiagnostico(diagnostico);
+
+                // Adiciona a consulta montada na lista
+                consultasEncontradas.add(consulta);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar consultas do paciente: " + e.getMessage());
+        }
+
+        return consultasEncontradas;
+    }
 }

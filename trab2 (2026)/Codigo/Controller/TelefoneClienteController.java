@@ -1,31 +1,33 @@
 
 package Controller;
 
-import DAO.TelefoneClienteDAO;
+import DAO.FoneDAO;
 import classes.genericos.*;
 
 public class TelefoneClienteController {
 
-    private final TelefoneClienteDAO telefoneDAO;
+    
+    
+    private final FoneDAO telefoneDAO;
 
     public TelefoneClienteController() {
-        this.telefoneDAO = new TelefoneClienteDAO();
+        this.telefoneDAO = new FoneDAO();
     }
-    public void cadastrar_fone_cliente(String numero, int idDoDDD, int idDoCliente) {
+    public void cadastrar_fone_cliente(String numero, int idDoDDD, int idPaciente) {
         
-        TelefoneCliente novoTelefone = new TelefoneCliente();
+        TelefonePaciente novoTelefone = new TelefonePaciente();
         novoTelefone.setTelefone(numero);
 
         DDD ddd = new DDD();
         ddd.setidDDD(idDoDDD);
         novoTelefone.setDDD(ddd);
  
-        Cliente cliente = new Cliente();
-        cliente.setidCliente(idDoCliente);
-        novoTelefone.setCliente(cliente); 
+        Paciente paciente = new Paciente();
+        paciente.setidPaciente(idPaciente);
+        novoTelefone.setPaciente (paciente); 
 
         
         telefoneDAO.cadastrarTelefone(novoTelefone);
-        System.out.println("Telefone cadastrado para o cliente ID " + idDoCliente);
+        System.out.println("Telefone cadastrado para o paciente ID " + idPaciente);
     }
 }

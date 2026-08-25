@@ -2,7 +2,7 @@
 package Controller;
 
 import DAO.EmailDAO;
-import classes.Email;
+import classes.genericos.*;
 
 public class EmailController {
     private final EmailDAO emailDAO;
@@ -16,10 +16,10 @@ public class EmailController {
             System.out.println("ID do cliente ou endereço de email inválido.");
             return;
         }
-        Email novoEmail = new Email();
+        EmailPaciente novoEmail = new EmailPaciente();
         novoEmail.setEmail(enderecoEmail);
         
-        emailDAO.cadastrarEmail(novoEmail, idCliente);
+        emailDAO.cadastrarEmailPaciente(novoEmail, idCliente);
         System.out.println("Email '" + enderecoEmail + "' cadastrado com sucesso para o cliente ID: " + idCliente);
     }
 }

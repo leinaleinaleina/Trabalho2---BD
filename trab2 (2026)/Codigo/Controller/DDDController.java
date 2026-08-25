@@ -2,8 +2,7 @@ package Controller;
 
 import DAO.DDDDAO;
 import DAO.DDDIDAO;
-import classes.DDD;
-import classes.DDDI;
+import classes.genericos.*;
 
 public class DDDController {
 
@@ -25,7 +24,7 @@ public class DDDController {
         
         
         dddiObj.setidDDDI(idDoDDDI);
-        dddParaSalvar.setDDDI(dddiObj);
+        dddParaSalvar.setDDD(dddiObj);
         
        
         int idGerado = dddDAO.cadastrarDDDD(dddParaSalvar);

@@ -1,7 +1,7 @@
 package Controller;
 
 import DAO.EnderecoDAO;
-import classes.Endereco;
+import classes.genericos.*;
 
 public class EnderecoController {
 

@@ -1,8 +1,7 @@
 -- Criação do Banco de Dados
-CREATE DATABASE IF NOT EXISTS Trabalho2;
-USE Trabalho2;
+CREATE DATABASE IF NOT EXISTS mydb;
+USE mydb;
 
--- ============Tabelas sem Chaves Estrangeiras)=============
 
 CREATE TABLE UF (
     idUF INT PRIMARY KEY,

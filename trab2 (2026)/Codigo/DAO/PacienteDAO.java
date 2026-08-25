@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ClienteDAO {
+public class PacienteDAO {
     private final String url = "jdbc:mysql://localhost:3306/mydb";
     
     private final String usuario = "root";
@@ -35,7 +35,7 @@ public void atualizarEnderecoCliente(int idPaciente, int idEndereco) {
 }
 
 
-public Paciente buscarClientePorID (int ID) {
+public Paciente buscarPacientePorID (int ID) {
     Paciente paciente = null;
     
     String sql = "SELECT " +
